@@ -1,0 +1,90 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email == 'tatahoda223456@gmail.com'
+      );
+    }
+
+    // Public read collections (Courses, Teachers, Blog, FAQ, Approved Reviews)
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /teachers/{teacherId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /blog/{blogId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /faq/{faqId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if isAdmin();
+    }
+
+    // User accounts
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // CRM Leads
+    match /leads/{leadId} {
+      allow read: if isAdmin();
+      allow create: if true; // Public web lead capture
+      allow update, delete: if isAdmin();
+    }
+
+    // Bookings
+    match /bookings/{bookingId} {
+      allow read: if isSignedIn() || isAdmin();
+      allow create: if true; // Public free trial booking
+      allow update, delete: if isAdmin();
+    }
+
+    // Lessons & Attendance
+    match /lessons/{lessonId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /attendance/{attendanceId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // Certificates (Public verification)
+    match /certificates/{certificateId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
