@@ -1,0 +1,96 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role and preferences",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 128 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["student", "teacher", "parent", "admin"] },
+        "phone": { "type": "string", "maxLength": 32 },
+        "country": { "type": "string", "maxLength": 64 },
+        "timezone": { "type": "string", "maxLength": 64 },
+        "languagePreference": { "type": "string", "enum": ["ar", "en"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Lead": {
+      "title": "Lead",
+      "description": "CRM prospective student lead record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 128 },
+        "whatsapp": { "type": "string", "maxLength": 32 },
+        "email": { "type": "string", "maxLength": 128 },
+        "country": { "type": "string", "maxLength": 64 },
+        "timezone": { "type": "string", "maxLength": 64 },
+        "source": { "type": "string", "maxLength": 64 },
+        "interestedCourse": { "type": "string", "maxLength": 64 },
+        "status": { "type": "string", "enum": ["New Lead", "Contacted", "Free Trial Booked", "Trial Completed", "Converted", "Follow Up", "Lost"] },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "whatsapp", "status", "interestedCourse"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Trial or regular lesson booking request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "studentName": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 128 },
+        "whatsapp": { "type": "string", "maxLength": 32 },
+        "country": { "type": "string", "maxLength": 64 },
+        "timezone": { "type": "string", "maxLength": 64 },
+        "courseCategory": { "type": "string", "maxLength": 64 },
+        "scheduledDate": { "type": "string", "maxLength": 32 },
+        "scheduledTime": { "type": "string", "maxLength": 16 },
+        "meetingLink": { "type": "string", "maxLength": 256 },
+        "status": { "type": "string", "enum": ["Pending", "Confirmed", "Completed", "Cancelled"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["studentName", "whatsapp", "courseCategory", "status"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Student or parent course testimonial",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "studentName": { "type": "string", "maxLength": 128 },
+        "country": { "type": "string", "maxLength": 64 },
+        "courseCategory": { "type": "string", "maxLength": 64 },
+        "rating": { "type": "number" },
+        "reviewTextAr": { "type": "string", "maxLength": 1000 },
+        "reviewTextEn": { "type": "string", "maxLength": 1000 },
+        "verified": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["studentName", "rating"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles and credentials"
+    },
+    "/leads/{leadId}": {
+      "schema": { "$ref": "#/entities/Lead" },
+      "description": "CRM leads pipeline synchronized with Sabeel Teacher"
+    },
+    "/bookings/{bookingId}": {
+      "schema": { "$ref": "#/entities/Booking" },
+      "description": "Live bookings and free trial sessions"
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/Review" },
+      "description": "Public verified reviews and student testimonials"
+    }
+  }
+}

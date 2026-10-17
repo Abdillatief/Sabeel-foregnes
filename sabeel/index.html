@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sabeel Academy | أكاديمية سبيل لتعليم القرآن الكريم واللغة العربية</title>
+    <meta name="description" content="Global Islamic Online Academy for Quran, Tajweed, Arabic & Islamic Studies. أكاديمية عالمية متخصصة في تعليم القرآن الكريم والتجويد واللغة العربية والدراسات الإسلامية." />
+    <meta property="og:title" content="Sabeel Academy | أكاديمية سبيل لتعليم القرآن الكريم واللغة العربية" />
+    <meta property="og:description" content="Global Islamic Online Academy for Quran, Tajweed, Arabic & Islamic Studies." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/jpeg" href="/src/assets/images/sabeel_brand_logo_1792261027598.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      (function() {
+        try {
+          var t = localStorage.getItem('sabeel_theme') || 'system';
+          var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var root = document.documentElement;
+          if (dark) {
+            root.classList.add('dark');
+            root.setAttribute('data-theme', 'dark');
+            root.style.colorScheme = 'dark';
+          } else {
+            root.classList.remove('dark');
+            root.setAttribute('data-theme', 'light');
+            root.style.colorScheme = 'light';
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-amber-400 selection:text-slate-950 transition-colors">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
